@@ -1,0 +1,13 @@
+FROM thaibigdata/intel-jupyterlab
+
+USER root
+RUN apt-get update && apt-get install -y poppler-utils && apt-get clean
+
+COPY requirements.txt /tmp/requirements.txt
+COPY ./models /opt/workspace/models
+
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+# RUN python download_models.py
+
+
+USER ${NB_UID}

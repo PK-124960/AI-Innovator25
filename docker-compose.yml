@@ -1,0 +1,161 @@
+# version: "3.8"
+
+services:
+  n8n:
+    build:
+      context: ./n8n
+      dockerfile: Dockerfile.n8n
+    image: rtarf-ai/n8n
+    container_name: n8n
+    restart: unless-stopped
+    user: "root"
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_RUNNERS_ENABLED=true
+      - NODE_ENV=production
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n
+      - DB_POSTGRESDB_USER=n8n
+      - DB_POSTGRESDB_PASSWORD=n8n
+      - TYPHOON_OCR_API_KEY=sk-mQg3pie1G1wCeGO3ZFmtbAEm1DLKAeFvJigPNBEF91c09UiB
+      - TYPHOON_OCR_URL=http://typhoon-ocr:8000
+      - GENERIC_TIMEZONE=Asia/Bangkok
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - postgres
+      - typhoon-ocr
+      # - tesseract-ocr
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=n8n
+      - POSTGRES_PASSWORD=n8n
+      - POSTGRES_DB=n8n
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "ps"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - app-network
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    restart: always
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - app-network
+
+  typhoon-ocr:
+    image: rtarf-ai/typhoon-ocr
+    build:
+      context: ./typhoon-ocr
+      dockerfile: Dockerfile.app
+    container_name: typhoon-ocr
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - typhoon_ocr_data:/app/data
+    environment:
+      - TYPHOON_OCR_API_KEY=sk-mQg3pie1G1wCeGO3ZFmtbAEm1DLKAeFvJigPNBEF91c09UiB
+      - TYPHOON_OCR_HOST=0.0.0.0
+      - TYPHOON_OCR_PORT=8000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  jupyterlab:
+    build:
+      context: .
+      dockerfile: Dockerfile.lab
+    image: rtarf-ai/innovator2025-jupyterlab # ตั้งชื่อ image ของเราเอง
+    container_name: jupyterlab_v2
+    restart: unless-stopped
+    ports:
+      - "8888:8888" # Jupyter
+      - "8501:8501" # Streamlit
+      - "5000:5000" # Flask (ถ้าใช้)
+    volumes:
+      - .:/opt/workspace
+    depends_on:
+      typhoon-ocr:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+    networks:
+      - app-network
+    command: >
+      jupyter lab
+      --ip=0.0.0.0
+      --port=8888
+      --no-browser
+      --allow-root
+      --notebook-dir=/opt/workspace
+      --NotebookApp.token=''
+      --NotebookApp.password=''
+
+  # tesseract-ocr:
+  #   image: rtarf-ai/tesseract-ocr
+  #   build:
+  #     context: ./tesseract-ocr
+  #     dockerfile: Dockerfile
+  #   container_name: tesseract-ocr-service
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./data:/data
+  #   networks:
+  #     - app-network
+  #   command: ["/bin/sh", "-c", "sleep infinity"]
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  n8n_data:
+  postgres_data:
+  ollama_data:
+  qdrant_data:
+  typhoon_ocr_data:
+  shared-workspace: {}

@@ -1,0 +1,14 @@
+FROM n8nio/n8n:latest
+
+USER root
+
+
+RUN apk update && \
+    apk add --no-cache python3 py3-pip py3-virtualenv curl poppler-utils docker-cli && \
+    rm -rf /var/cache/apk/*
+
+RUN apk update && \
+    apk add --no-cache imagemagick poppler-utils && \
+    rm -rf /var/cache/apk/*
+
+USER node
