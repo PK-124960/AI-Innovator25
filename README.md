@@ -40,8 +40,8 @@
 ### ขั้นตอนการติดตั้ง
 1.  **Clone a Repository:**
     ```bash
-    git clone [[Your-Repository-URL](https://github.com/PK-124960/AI-Innovator25.git)]
-    cd [AI-Innovator25]
+    git clone https://github.com/PK-124960/AI-Innovator25.git
+    cd AI-Innovator25
     ```
 
 2.  **เตรียมไฟล์ระเบียบสารบรรณ:**
