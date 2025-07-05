@@ -5,15 +5,23 @@ import ollama
 from styles.main_style import load_css
 from utils.file_helper import image_to_base64
 from utils.ui_helper import render_sidebar
+from utils.ingest_knowledge_base import initialize_knowledge_base
 
 st.set_page_config(
-    page_title="หน้าแรก - ระบบสร้างเอกสารราชการอัจฉริยะ",
-    page_icon="✨",
+    page_title="ระบบสร้างเอกสารราชการอัตโนมัติ",
+    page_icon="🏠",
     layout="wide",
 )
 
 load_css()
 render_sidebar()
+
+@st.cache_resource
+def run_knowledge_base_initialization():
+    initialize_knowledge_base()
+    return True
+
+KNOWLEDGE_BASE_READY = run_knowledge_base_initialization()
 
 # --- MAIN PAGE CONTENT ---
 st.title("ระบบสร้างเอกสารราชการอัตโนมัติ")

@@ -1,0 +1,10 @@
+FROM ollama/ollama:latest
+
+# คัดลอก entrypoint script เข้าไปใน image
+COPY entrypoint.sh /entrypoint.sh
+
+# ทำให้ script สามารถ execute ได้ภายใน image
+RUN chmod +x /entrypoint.sh
+
+# กำหนดให้ container รัน script นี้เมื่อเริ่มต้น
+ENTRYPOINT ["/entrypoint.sh"]

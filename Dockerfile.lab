@@ -7,7 +7,7 @@ COPY requirements.txt /tmp/requirements.txt
 COPY ./models /opt/workspace/models
 
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
-# RUN python download_models.py
 
+# RUN python download_models.py
 
 USER ${NB_UID}
