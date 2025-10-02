@@ -36,19 +36,7 @@ The general workflow is as follows (paraphrased from: OCR-result.pdf, p. 40, App
 
 *   **Hardware:** An NVIDIA GeForce RTX 4060 GPU or similar is required to run the models. (source: OCR-result.pdf, p. 29, Section 3.4)
 *   **Software:** Docker is used to containerize the application and services. (source: OCR-result.pdf, p. 21, Section 3)
-*   `[[MISSING - a full list of software prerequisites, including Python version]]`
 
-## Installation
-
-# [[MISSING - installation commands]]
-# 1. Clone the repository
-# git clone https://github.com/PK-124960/AI-Innovator25.git
-#
-# [[MISSING - steps to build and run docker containers]]
-
-## Usage Examples
-
-`[[MISSING - example code blocks or specific usage commands]]`
 
 ## Data
 
@@ -57,11 +45,7 @@ The project uses a dataset of real-world official documents from the Royal Thai 
 > "The dataset used for this study consists of real-world official documents from the Royal Thai Armed Forces, comprising two types: 'Memorandums' and 'Joint News Memos.'" (source: OCR-result.pdf, p. 29, Section 3.5)
 *   **Fine-tuning Set:** 100 documents (50 of each type).
 *   **Test Set:** 20 documents (10 of each type).
-
-## File / Folder Structure
-
-`[[MISSING - a tree or detailed list of the project's file structure]]`
-
+  
 Key scripts mentioned:
 *   `llm_helper.py`
 *   `ui_helper.py`
@@ -81,10 +65,6 @@ The system uses a three-layer architecture, containerized with Docker for easy d
 
 (paraphrased from: OCR-result.pdf, p. 21, Chapter 3)
 
-## Configuration
-
-`[[MISSING - details on environment variables or configuration files]]`
-
 ## Tests
 
 Evaluation metrics like Character Accuracy, Word Accuracy, ROUGE-L, and BERTScore were used to validate performance. The document does not provide commands on how to run these tests. (paraphrased from: OCR-result.pdf, p. 30, Section 3.6)
@@ -100,22 +80,13 @@ We welcome contributions! Please follow these steps:
 4.  Push to the branch (`git push origin feature/AmazingFeature`).
 5.  Open a Pull Request.
 
-## License
-
-`[[MISSING - license info]]`
-
 ## Maintainers / Contact
 
 *   **Author:** Ponkrit Kaewsawee
-*   `[[MISSING - maintainer email or contact information]]`
 
 ## Acknowledgements
 
 > "I am deeply grateful to the AIT Scholarship Committee for their generous support... I would like to express my deepest gratitude to my supervisor, Prof. Chaklam Silpasuwanchai, for his invaluable guidance, mentorship, and unwavering support... My sincere thanks also go to the TA, Mr. Akaradet, for his time and constructive comments. I am also grateful to the Royal Thai Armed Forces for providing the opportunity and resources that made this real-world study possible." (source: OCR-result.pdf, p. iii, Acknowledgements)
-
-## Troubleshooting / FAQ
-
-`[[MISSING - troubleshooting guide or frequently asked questions]]`
 
 ## References / Sources
 
