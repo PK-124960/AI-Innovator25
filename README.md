@@ -1,125 +1,128 @@
-# ระบบสร้างเอกสารราชการอัตโนมัติ (Automatic Official Document Generation System)
+# A Hybrid Intelligence Pipeline for End-to-End Automation of Thai Official Military Correspondence
 
-![Rtarf Ai](https://img.shields.io/badge/RTARF-AI%20Innovator-blue.svg)
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.30%2B-ff4b4b.svg)
-![Ollama](https://img.shields.io/badge/Ollama-Enabled-lightgrey.svg)
+This project provides a secure, on-premise system to automatically process and reply to official Thai military documents.
 
-**ระบบสร้างเอกสารราชการอัตโนมัติ** คือเว็บแอปพลิเคชันที่ถูกสร้างขึ้นเพื่อปฏิวัติกระบวนการทำงานเอกสารราชการไทย โดยใช้เทคโนโลยีปัญญาประดิษฐ์ (AI) และ Large Language Models (LLM) เป็นแกนหลัก มีเป้าหมายเพื่อลดภาระงานด้านเอกสารที่ซ้ำซ้อน, เพิ่มความเร็วและความแม่นยำ, และทำหน้าที่เป็นผู้ช่วยอัจฉริยะสำหรับเจ้าหน้าที่
+## Short Description
 
----
+This system addresses the challenges of manually handling official correspondence in high-security environments like the Royal Thai Armed Forces (RTARF). It uses a "Hybrid Intelligence Pipeline" to automate the entire workflow, from reading incoming documents to drafting replies. The solution is designed to be secure, efficient, and run on local hardware to prevent data leaks.
 
-## ✨ คุณสมบัติหลัก (Core Features)
+## Features / Key Points
 
-ระบบประกอบด้วย 3 โมดูลหลักที่ทำงานร่วมกันอย่างเป็นระบบ:
+*   **End-to-End Automation:** The system manages the full document workflow, framed as a "See, Read, Analyze, and Generate" process.
+*   **Secure and On-Premise:** All components run locally within a secure network, avoiding the risks of cloud-based APIs.
+    > "To address this gap, this study designs, develops, and evaluates a 'Hybrid Intelligence Pipeline,' an IDP architecture engineered specifically for secure, on-premise operation." (source: OCR-result.pdf, p. 4, Abstract)
+*   **Complex Document Handling:** It uses a fine-tuned YOLOv8 model for Document Layout Analysis (DLA) to understand the structure of complex military documents.
+    > "To tackle complex document structures, a fine-tuned YOLOv8 model is employed to identify the three primary logical regions: Header, Main Body, and Closing..." (source: OCR-result.pdf, p. 22, Section 3.1.1)
+*   **High-Accuracy OCR:** A two-stage OCR post-correction process significantly improves text accuracy, especially for military-specific terms.
+    > "The combination of a dictionary-based method for predictable, domain-specific errors and a fuzzy matching algorithm for general typographical errors successfully resolves a wide range of OCR inaccuracies." (source: OCR-result.pdf, p. 33, Section 4.1.1)
+*   **Safe Content Generation:** It uses a secure Retrieval-Augmented Generation (RAG) framework with a small, locally-deployed Large Language Model (LLM) to generate accurate and factually grounded replies.
+    > "...a Secure Retrieval-Augmented Generation (RAG) framework that utilizes a small, locally-deployable LLM to generate content safely." (source: OCR-result.pdf, p. 4, Abstract)
+*   **Human-in-the-Loop Verification:** Users verify key steps of the process, which builds trust and ensures the final document matches the user's intent.
+    > "This step is critical for building user trust and encouraging system adoption, as it positions the AI as a competent assistant rather than a tool that creates more work." (source: OCR-result.pdf, p. 35, Section 4.2.3)
 
-### ✍️ 1. ร่างหนังสือราชการ (Draft Generation)
-- **หน้าที่:** แปลงข้อความภาษาพูด หรือ "ความคิด" ของผู้ใช้ ให้กลายเป็นเนื้อหาของหนังสือราชการ (`บันทึกข้อความ`, `กระดาษข่าวร่วม (ทท.)`) ที่มีโครงสร้างและสำนวนถูกต้องตามระเบียบ
-- **เทคโนโลยี:** Prompt Engineering, LLM Generation
+## Quick Start / Quick Demo
 
-### 📬 2. สร้างหนังสือตอบกลับ (Reply Generation Pipeline)
-- **หน้าที่:** กระบวนการอัตโนมัติแบบครบวงจร (End-to-End) ที่วิเคราะห์หนังสือรับในรูปแบบไฟล์ PDF และสร้างร่างหนังสือตอบกลับที่สอดคล้องกันอย่างชาญฉลาด
-- **เทคโนโลยี:** OCR, Information Extraction, Retrieval-Augmented Generation (RAG), Multi-step Chained Prompts
+The system provides a web interface for users. The code is available at: `https://github.com/PK-124960/AI-Innovator25.git` (source: OCR-result.pdf, p. 32, Figure 4.1 Caption).
 
-### 🤖 3. ที่ปรึกษาอัจฉริยะ (RAG-Powered Chatbot)
-- **หน้าที่:** ผู้ช่วยส่วนตัวที่ทำหน้าที่เป็น "คู่มือมีชีวิต" สามารถตอบคำถามเกี่ยวกับ **วิธีการใช้งานระบบ** และ **ระเบียบงานสารบรรณ** (จากไฟล์ PDF ที่กำหนด)
-- **เทคโนโลยี:** Retrieval-Augmented Generation (RAG), Vector Embeddings (`intfloat/multilingual-e5-large`), Query Routing
+The general workflow is as follows (paraphrased from: OCR-result.pdf, p. 40, Appendix A.2):
+1.  **Login:** The user logs into the system dashboard.
+2.  **Upload:** The user uploads a PDF of a "Memorandum" or "Joint News Memo".
+3.  **Verify OCR:** The system displays the extracted text. The user can correct any errors.
+4.  **Extract Data:** The system automatically extracts key information (like subject, date, sender) into a structured format for user review.
+5.  **Confirm Intent:** The system generates three summary options ("Clause 1"). The user selects, edits, and confirms the best one.
+6.  **Generate Draft:** The system uses the confirmed information to generate a complete, factually grounded final draft for the user to review, copy, or download.
 
-### สำหรับวิดีโอสาธิตการใช้งานโปรเจกต์นี้ [สามารถคลิกดูได้ที่นี่](https://drive.google.com/file/d/14fyeIbFr9fNXKPE64LzstLgkxvY_ckTE/view?usp=sharing)
----
+## Prerequisites
 
-## 🚀 การติดตั้งและใช้งาน (Installation & Setup)
+*   **Hardware:** An NVIDIA GeForce RTX 4060 GPU or similar is required to run the models. (source: OCR-result.pdf, p. 29, Section 3.4)
+*   **Software:** Docker is used to containerize the application and services. (source: OCR-result.pdf, p. 21, Section 3)
+*   `[[MISSING - a full list of software prerequisites, including Python version]]`
 
-โปรเจกต์นี้ถูกออกแบบมาเพื่อทำงานบน Docker และ Docker Compose เพื่อความสะดวกในการจัดการ Dependencies และการนำไปใช้งาน
+## Installation
 
-### สิ่งที่ต้องมี (Prerequisites)
-- [Docker](https://www.docker.com/products/docker-desktop/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-- การเชื่อมต่ออินเทอร์เน็ต (สำหรับการตั้งค่าครั้งแรกและการดาวน์โหลดโมเดล)
+```bash
+# [[MISSING - installation commands]]
+# 1. Clone the repository
+# git clone https://github.com/PK-124960/AI-Innovator25.git
+#
+# [[MISSING - steps to build and run docker containers]]```
 
-### ขั้นตอนการติดตั้ง
-1.  **Clone a Repository:**
-    ```bash
-    git clone https://github.com/PK-124960/AI-Innovator25.git
-    cd AI-Innovator25
-    ```
+## Usage Examples
 
-2.  **เตรียมไฟล์ระเบียบสารบรรณ:**
-    - นำไฟล์ PDF ระเบียบงานสารบรรณของคุณมาวางไว้ในโฟลเดอร์ `k_base/`
-    - ตรวจสอบให้แน่ใจว่าชื่อไฟล์ตรงกับที่ระบุใน `utils/llm_helper.py` (ค่าเริ่มต้นคือ `k_base/02-sarabun_2566.pdf`)
+`[[MISSING - example code blocks or specific usage commands]]`
 
-3.  **ดาวน์โหลด Embedding Model (ทำงานแบบออฟไลน์):**
-    - รันสคริปต์เพื่อดาวน์โหลดโมเดลสำหรับทำ Vector Search มาเก็บไว้ในเครื่องก่อนสร้าง Docker image วิธีนี้จะทำให้แอปเริ่มต้นทำงานได้เร็วขึ้นและไม่ขึ้นกับการเชื่อมต่ออินเทอร์เน็ตในภายหลัง
-    ```bash
-    pip install sentence-transformers
-    python download_model.py
-    ```
-    - รอจนกว่าการดาวน์โหลดจะเสร็จสิ้น จะมีโฟลเดอร์ `models/embedding-model` ปรากฏขึ้นมา
+## Data
 
-4.  **สร้างและรัน Container ด้วย Docker Compose:**
-    ```bash
-    docker-compose up --build -d
-    ```
-    - คำสั่งนี้จะสร้าง Docker image ที่จำเป็นทั้งหมด (แอป Streamlit, Ollama, Typhoon-OCR) และรันขึ้นมาเป็น service
-    - Flag `-d` หมายถึงการรันใน background (detached mode)
+The project uses a dataset of real-world official documents from the Royal Thai Armed Forces.
 
-5.  **เข้าใช้งานระบบ:**
-    - เปิดเว็บเบราว์เซอร์แล้วไปที่: `http://localhost:8501`
-    - ระบบพร้อมใช้งาน!
+> "The dataset used for this study consists of real-world official documents from the Royal Thai Armed Forces, comprising two types: 'Memorandums' and 'Joint News Memos.'" (source: OCR-result.pdf, p. 29, Section 3.5)
+*   **Fine-tuning Set:** 100 documents (50 of each type).
+*   **Test Set:** 20 documents (10 of each type).
 
----
+## File / Folder Structure
 
-## 🏛️ สถาปัตยกรรมของระบบ (System Architecture)
+`[[MISSING - a tree or detailed list of the project's file structure]]`
 
-ระบบประกอบด้วย Service หลักที่ทำงานร่วมกันผ่านเครือข่ายของ Docker:
+Key scripts mentioned:
+*   `llm_helper.py`
+*   `ui_helper.py`
+(source: OCR-result.pdf, p. 21, Figure 3.1)
 
--   **`streamlit_app` (Frontend):**
-    -   เป็น Service หลักที่ผู้ใช้โต้ตอบด้วย สร้างจาก Streamlit
-    -   ทำหน้าที่เป็น Orchestrator ที่เรียกใช้บริการอื่นๆ
-    -   เข้าถึงได้ที่ `http://localhost:8501`
+## How it Works / Architecture
 
--   **`ollama` (AI Engine):**
-    -   Service สำหรับรัน Large Language Models (LLM) และ Embedding Models
-    -   ภายในมีการรัน Fine-tuned โมเดล `scb10x/llama3.1-typhoon2-8b-instruct:latest`
-    -   แอป Streamlit จะสื่อสารกับ Service นี้ผ่าน HTTP API ที่ `http://ollama:11434`
+The system uses a three-layer architecture, containerized with Docker for easy deployment.
 
--   **`typhoon-ocr` (OCR Service):**
-    -   Service ที่ทำหน้าที่แปลงรูปภาพเป็นข้อความโดยเฉพาะ
-    -   แอป Streamlit จะส่งรูปภาพจากไฟล์ PDF ไปยัง Service นี้ผ่าน HTTP POST Request ที่ `http://typhoon-ocr:8000/process`
+1.  **User Interaction Layer:** A simple web interface built with Streamlit.
+2.  **Application & Orchestration Layer:** JupyterLab and Python scripts control the workflow.
+3.  **AI & Data Services Layer:** This is the core of the system and includes all on-premise AI models:
+    *   **YOLOv8:** For Document Layout Analysis (DLA).
+    *   **Typhoon-OCR:** For Optical Character Recognition (OCR).
+    *   **Llama-based LLM (Typhoon):** Runs on Ollama for data extraction and content generation.
+    *   **Qdrant:** A vector database for the RAG system.
 
----
+(paraphrased from: OCR-result.pdf, p. 21, Chapter 3)
 
-## 📁 โครงสร้างไฟล์ (File Structure)
-```
-.
-├── assets/                     # เก็บไฟล์รูปภาพสำหรับ UI
-├── k_base/                     # เก็บไฟล์ PDF สำหรับ Knowledge Base ของ Chatbot
-├── models/                     # เก็บ Embedding Model ที่ดาวน์โหลดแล้ว
-├── pages/                      # โค้ดสำหรับแต่ละหน้าในแอป Streamlit
-│   ├── 1_✍️_ร่างหนังสือราชการ.py
-│   ├── 2_📬_สร้างหนังสือตอบกลับ.py
-│   └── 3_🤖_ที่ปรึกษาอัจฉริยะ.py
-├── styles/                     # ไฟล์ CSS สำหรับตกแต่ง UI
-│   └── main_style.py
-├── utils/                      # Helper modules ต่างๆ
-│   ├── file_helper.py
-│   ├── llm_helper.py           # หัวใจหลักของ Logic AI ทั้งหมด
-│   └── ui_helper.py
-├── app.py                      # ไฟล์หลักสำหรับหน้าแรก
-├── download_model.py           # สคริปต์สำหรับดาวน์โหลดโมเดล
-├── docker-compose.yml          # ไฟล์กำหนดการทำงานของ Docker Services
-├── Dockerfile                  # คำสั่งสำหรับสร้าง Docker Image ของแอป
-└── README.md                   # เอกสารประกอบโปรเจกต์ (ไฟล์นี้)
-```
----
+## Configuration
 
-## 🔧 การปรับปรุงและพัฒนาต่อ (Future Development)
+`[[MISSING - details on environment variables or configuration files]]`
 
--   **Vector Database:** เปลี่ยนจากการค้นหาแบบ In-memory ใน `get_relevant_context` ไปใช้ Vector Database จริง เช่น ChromaDB หรือ FAISS เพื่อรองรับ Knowledge Base ขนาดใหญ่และเพิ่มความเร็วในการค้นหา
--   **Fine-tuning:** ทำการ Fine-tune โมเดล LLM ด้วยข้อมูลคู่ "คำสั่ง-ผลลัพธ์" ของเอกสารราชการ เพื่อให้ AI เข้าใจสำนวนและโครงสร้างที่ซับซ้อนได้ดียิ่งขึ้น
--   **Feedback Loop:** พัฒนาระบบ Feedback (`save_feedback`) ให้สมบูรณ์ เพื่อเก็บข้อมูลการแก้ไขของผู้ใช้และนำไปใช้ในการ Fine-tune โมเดลในอนาคต
--   **Authentication:** เพิ่มระบบยืนยันตัวตนสำหรับผู้ใช้งาน
+## Tests
 
----
+Evaluation metrics like Character Accuracy, Word Accuracy, ROUGE-L, and BERTScore were used to validate performance. The document does not provide commands on how to run these tests. (paraphrased from: OCR-result.pdf, p. 30, Section 3.6)
 
-RTARF AI Innovator 2025 - TEAM: Fine-Tuner
+## Contributing
+
+`[[This is a generic template, as no contribution guide was provided in the source document]]`
+
+We welcome contributions! Please follow these steps:
+1.  Fork the repository.
+2.  Create a new branch for your feature (`git checkout -b feature/AmazingFeature`).
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4.  Push to the branch (`git push origin feature/AmazingFeature`).
+5.  Open a Pull Request.
+
+## License
+
+`[[MISSING - license info]]`
+
+## Maintainers / Contact
+
+*   **Author:** Ponkrit Kaewsawee
+*   `[[MISSING - maintainer email or contact information]]`
+
+## Acknowledgements
+
+> "I am deeply grateful to the AIT Scholarship Committee for their generous support... I would like to express my deepest gratitude to my supervisor, Prof. Chaklam Silpasuwanchai, for his invaluable guidance, mentorship, and unwavering support... My sincere thanks also go to the TA, Mr. Akaradet, for his time and constructive comments. I am also grateful to the Royal Thai Armed Forces for providing the opportunity and resources that made this real-world study possible." (source: OCR-result.pdf, p. iii, Acknowledgements)
+
+## Troubleshooting / FAQ
+
+`[[MISSING - troubleshooting guide or frequently asked questions]]`
+
+## References / Sources
+
+*   **Source Document:** `OCR-result.pdf` - A special study paper titled "A Hybrid Intelligence Pipeline for End-to-End Automation of Thai Official Military Correspondence". This document was the primary source for all information in this README.
+    *   Project goal and description from the Abstract and Chapter 1.
+    *   Architecture and technical details from Chapter 3 and Figures 3.1, 3.2.
+    *   Dataset information from Section 3.5.
+    *   User workflow from Appendix A.2.
+    *   Acknowledgements from page iii.
