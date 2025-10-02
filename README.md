@@ -40,12 +40,11 @@ The general workflow is as follows (paraphrased from: OCR-result.pdf, p. 40, App
 
 ## Installation
 
-```bash
 # [[MISSING - installation commands]]
 # 1. Clone the repository
 # git clone https://github.com/PK-124960/AI-Innovator25.git
 #
-# [[MISSING - steps to build and run docker containers]]```
+# [[MISSING - steps to build and run docker containers]]
 
 ## Usage Examples
 
