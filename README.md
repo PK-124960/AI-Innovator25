@@ -69,17 +69,6 @@ The system uses a three-layer architecture, containerized with Docker for easy d
 
 Evaluation metrics like Character Accuracy, Word Accuracy, ROUGE-L, and BERTScore were used to validate performance. The document does not provide commands on how to run these tests. (paraphrased from: OCR-result.pdf, p. 30, Section 3.6)
 
-## Contributing
-
-`[[This is a generic template, as no contribution guide was provided in the source document]]`
-
-We welcome contributions! Please follow these steps:
-1.  Fork the repository.
-2.  Create a new branch for your feature (`git checkout -b feature/AmazingFeature`).
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the branch (`git push origin feature/AmazingFeature`).
-5.  Open a Pull Request.
-
 ## Maintainers / Contact
 
 *   **Author:** Ponkrit Kaewsawee
